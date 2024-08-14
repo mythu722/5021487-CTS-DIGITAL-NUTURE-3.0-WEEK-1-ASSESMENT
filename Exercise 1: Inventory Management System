@@ -1,0 +1,110 @@
+import java.util.HashMap;
+
+class Product {
+    private String productId;
+    private String productName;
+    private int quantity;
+    private double price;
+
+    // Constructor
+    public Product(String productId, String productName, int quantity, double price) {
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    // Getters and Setters
+    public String getProductId() {
+        return productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductId: " + productId + ", Name: " + productName + ", Quantity: " + quantity + ", Price: " + price;
+    }
+}
+
+class Inventory {
+    private HashMap<String, Product> products;
+
+    // Constructor
+    public Inventory() {
+        products = new HashMap<>();
+    }
+
+    // Add product to inventory
+    public void addProduct(Product product) {
+        products.put(product.getProductId(), product);
+        System.out.println("Product added: " + product);
+    }
+
+    // Update product in inventory
+    public void updateProduct(String productId, int quantity, double price) {
+        Product product = products.get(productId);
+        if (product != null) {
+            product.setQuantity(quantity);
+            product.setPrice(price);
+            System.out.println("Product updated: " + product);
+        } else {
+            System.out.println("Product not found");
+        }
+    }
+
+    // Delete product from inventory
+    public void deleteProduct(String productId) {
+        Product removedProduct = products.remove(productId);
+        if (removedProduct != null) {
+            System.out.println("Product deleted: " + removedProduct);
+        } else {
+            System.out.println("Product not found");
+        }
+    }
+
+    // Get product details
+    public Product getProduct(String productId) {
+        return products.get(productId);
+    }
+}
+
+public class InventoryManagementSystem {
+    public static void main(String[] args) {
+        Inventory inventory = new Inventory();
+
+        // Adding products
+        Product p1 = new Product("101", "Laptop", 10, 999.99);
+        Product p2 = new Product("102", "Phone", 50, 499.99);
+
+        inventory.addProduct(p1);
+        inventory.addProduct(p2);
+
+        // Updating a product
+        inventory.updateProduct("101", 15, 949.99);
+
+        // Deleting a product
+        inventory.deleteProduct("102");
+
+        // Retrieving a product
+        System.out.println("Product retrieved: " + inventory.getProduct("101"));
+    }
+}
