@@ -1,0 +1,86 @@
+// Book class
+class Book {
+    private String bookId;
+    private String title;
+    private String author;
+
+    public Book(String bookId, String title, String author) {
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    @Override
+    public String toString() {
+        return "BookId: " + bookId + ", Title: " + title + ", Author: " + author;
+    }
+}
+
+// Library Management
+public class LibraryManagement {
+
+    // Linear search for a book by title
+    public static Book linearSearch(Book[] books, String targetTitle) {
+        for (Book book : books) {
+            if (book.getTitle().equalsIgnoreCase(targetTitle)) {
+                return book;
+            }
+        }
+        return null;
+    }
+
+    // Binary search for a book by title (array must be sorted)
+    public static Book binarySearch(Book[] books, String targetTitle) {
+        int left = 0, right = books.length - 1;
+        while (left <= right) {
+            int middle = left + (right - left) / 2;
+            int comparison = books[middle].getTitle().compareToIgnoreCase(targetTitle);
+            if (comparison == 0) {
+                return books[middle];
+            }
+            if (comparison < 0) {
+                left = middle + 1;
+            } else {
+                right = middle - 1;
+            }
+        }
+        return null;
+    }
+
+    // Sort books by title for binary search
+    public static void sortBooks(Book[] books) {
+        Arrays.sort(books, Comparator.comparing(Book::getTitle));
+    }
+
+    public static void main(String[] args) {
+        Book[] books = {
+            new Book("B001", "The Great Gatsby", "F. Scott Fitzgerald"),
+            new Book("B002", "Moby Dick", "Herman Melville"),
+            new Book("B003", "1984", "George Orwell"),
+            new Book("B004", "To Kill a Mockingbird", "Harper Lee")
+        };
+
+        // Linear Search
+        System.out.println("Linear Search:");
+        Book result = linearSearch(books, "1984");
+        if (result != null) {
+            System.out.println("Book found: " + result);
+        } else {
+            System.out.println("Book not found.");
+        }
+
+        // Binary Search (after sorting)
+        sortBooks(books);
+        System.out.println("\nBinary Search:");
+        result = binarySearch(books, "Moby Dick");
+        if (result != null) {
+            System.out.println("Book found: " + result);
+        } else {
+            System.out.println("Book not found.");
+        }
+    }
+}
