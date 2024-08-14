@@ -1,0 +1,104 @@
+// Employee class
+class Employee {
+    private String employeeId;
+    private String name;
+    private String position;
+    private double salary;
+
+    public Employee(String employeeId, String name, String position, double salary) {
+        this.employeeId = employeeId;
+        this.name = name;
+        this.position = position;
+        this.salary = salary;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeeId: " + employeeId + ", Name: " + name + ", Position: " + position + ", Salary: " + salary;
+    }
+}
+
+// Employee Management System
+public class EmployeeManagement {
+
+    private Employee[] employees;
+    private int count;
+
+    public EmployeeManagement(int size) {
+        employees = new Employee[size];
+        count = 0;
+    }
+
+    // Add employee
+    public void addEmployee(Employee emp) {
+        if (count < employees.length) {
+            employees[count++] = emp;
+        } else {
+            System.out.println("Array is full, can't add more employees.");
+        }
+    }
+
+    // Search employee by ID
+    public Employee searchEmployee(String empId) {
+        for (int i = 0; i < count; i++) {
+            if (employees[i].getEmployeeId().equals(empId)) {
+                return employees[i];
+            }
+        }
+        return null;
+    }
+
+    // Traverse and display employees
+    public void traverseEmployees() {
+        for (int i = 0; i < count; i++) {
+            System.out.println(employees[i]);
+        }
+    }
+
+    // Delete employee by ID
+    public void deleteEmployee(String empId) {
+        for (int i = 0; i < count; i++) {
+            if (employees[i].getEmployeeId().equals(empId)) {
+                employees[i] = employees[--count]; // Replace with last employee and decrease count
+                employees[count] = null;
+                System.out.println("Employee deleted.");
+                return;
+            }
+        }
+        System.out.println("Employee not found.");
+    }
+
+    public static void main(String[] args) {
+        EmployeeManagement empMgmt = new EmployeeManagement(5);
+
+        // Adding employees
+        empMgmt.addEmployee(new Employee("E001", "Alice", "Manager", 75000));
+        empMgmt.addEmployee(new Employee("E002", "Bob", "Developer", 55000));
+
+        // Display all employees
+        System.out.println("Employees:");
+        empMgmt.traverseEmployees();
+
+        // Search for an employee
+        System.out.println("\nSearch for Employee with ID E002:");
+        Employee emp = empMgmt.searchEmployee("E002");
+        if (emp != null) {
+            System.out.println("Employee found: " + emp);
+        } else {
+            System.out.println("Employee not found.");
+        }
+
+        // Deleting an employee
+        System.out.println("\nDeleting Employee with ID E002:");
+        empMgmt.deleteEmployee("E002");
+        empMgmt.traverseEmployees();
+    }
+}
