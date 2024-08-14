@@ -1,0 +1,115 @@
+// Task class
+class Task {
+    private String taskId;
+    private String taskName;
+    private String status;
+
+    public Task(String taskId, String taskName, String status) {
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.status = status;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public String toString() {
+        return "TaskId: " + taskId + ", TaskName: " + taskName + ", Status: " + status;
+    }
+}
+
+// Singly Linked List to manage tasks
+class TaskLinkedList {
+    private class Node {
+        Task task;
+        Node next;
+
+        Node(Task task) {
+            this.task = task;
+            next = null;
+        }
+    }
+
+    private Node head;
+
+    // Add task
+    public void addTask(Task task) {
+        Node newNode = new Node(task);
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+    }
+
+    // Search for a task
+    public Task searchTask(String taskId) {
+        Node temp = head;
+        while (temp != null) {
+            if (temp.task.getTaskId().equals(taskId)) {
+                return temp.task;
+            }
+            temp = temp.next;
+        }
+        return null;
+    }
+
+    // Traverse and display tasks
+    public void traverseTasks() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.println(temp.task);
+            temp = temp.next;
+        }
+    }
+
+    // Delete task by ID
+    public void deleteTask(String taskId) {
+        if (head == null) return;
+
+        if (head.task.getTaskId().equals(taskId)) {
+            head = head.next; // Head is the task to delete
+            return;
+        }
+
+        Node temp = head;
+        while (temp.next != null && !temp.next.task.getTaskId().equals(taskId)) {
+            temp = temp.next;
+        }
+
+        if (temp.next != null) {
+            temp.next = temp.next.next; // Skip the task to delete
+        }
+    }
+
+    public static void main(String[] args) {
+        TaskLinkedList taskList = new TaskLinkedList();
+
+        // Add tasks
+        taskList.addTask(new Task("T001", "Develop UI", "In Progress"));
+        taskList.addTask(new Task("T002", "Fix Bugs", "Pending"));
+
+        // Display all tasks
+        System.out.println("Tasks:");
+        taskList.traverseTasks();
+
+        // Search for a task
+        System.out.println("\nSearch for Task with ID T001:");
+        Task task = taskList.searchTask("T001");
+        if (task != null) {
+            System.out.println("Task found: " + task);
+        } else {
+            System.out.println("Task not found.");
+        }
+
+        // Delete task
+        System.out.println("\nDeleting Task with ID T001:");
+        taskList.deleteTask("T001");
+        taskList.traverseTasks();
+    }
+}
